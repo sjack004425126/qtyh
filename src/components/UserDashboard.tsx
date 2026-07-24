@@ -6,9 +6,10 @@ import { motion } from 'motion/react';
 interface UserDashboardProps {
   phone: string;
   onLogout: () => void;
+  onOpenUpload?: () => void;
 }
 
-export const UserDashboard: React.FC<UserDashboardProps> = ({ phone, onLogout }) => {
+export const UserDashboard: React.FC<UserDashboardProps> = ({ phone, onLogout, onOpenUpload }) => {
   const maskedPhone = phone.length >= 11 ? `${phone.slice(0, 3)}****${phone.slice(7)}` : phone;
 
   return (
@@ -33,7 +34,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ phone, onLogout })
       </div>
 
       {/* User Info Card */}
-      <div className="bg-stone-50/80 rounded-2xl p-4 border border-stone-200/60 mb-6 space-y-3 text-left">
+      <div className="bg-stone-50/80 rounded-2xl p-4 border border-stone-200/60 mb-5 space-y-3 text-left">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-[#243727] text-white flex items-center justify-center font-bold text-sm shadow-sm">
             <User className="w-5 h-5" />
@@ -53,8 +54,19 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ phone, onLogout })
         </div>
       </div>
 
+      {/* Primary Action to Upload Page */}
+      {onOpenUpload && (
+        <button
+          onClick={onOpenUpload}
+          className="w-full py-3.5 mb-4 bg-[#243727] hover:bg-[#1a281c] text-white text-xs font-bold rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.98]"
+        >
+          <Sparkles className="w-4 h-4 text-emerald-300" />
+          进入视频创作投稿
+        </button>
+      )}
+
       {/* Feature Perks */}
-      <div className="grid grid-cols-2 gap-2 mb-6 text-xs text-neutral-700">
+      <div className="grid grid-cols-2 gap-2 mb-5 text-xs text-neutral-700">
         <div className="p-3 bg-stone-50/50 rounded-xl border border-stone-100 flex flex-col items-center gap-1">
           <Sparkles className="w-4 h-4 text-[#243727]" />
           <span className="font-medium text-[11px]">特权权益同步</span>
