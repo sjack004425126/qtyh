@@ -6,10 +6,10 @@ import { PhoneLoginModal } from './components/PhoneLoginModal';
 import { UserDashboard } from './components/UserDashboard';
 import { VideoUploadPage } from './components/VideoUploadPage';
 import { Toast, ToastMessage } from './components/Toast';
-import { LogIn, Upload, ShieldCheck, Sparkles } from 'lucide-react';
+import { LogIn, Upload, User, ShieldCheck, Sparkles } from 'lucide-react';
 import bgImage from './assets/images/login_bg_1784889627874.jpg';
 
-type ViewMode = 'login' | 'upload';
+type ViewMode = 'login' | 'upload' | 'profile';
 
 export default function App() {
   const [agreedTerms, setAgreedTerms] = useState(false);
@@ -17,9 +17,9 @@ export default function App() {
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
   const [isAgreedShaking, setIsAgreedShaking] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userPhone, setUserPhone] = useState('');
-  const [activeTab, setActiveTab] = useState<ViewMode>('upload'); // Default to upload view to immediately showcase beautified page
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Default logged-in state to showcase profile page
+  const [userPhone, setUserPhone] = useState('13888888888');
+  const [activeTab, setActiveTab] = useState<ViewMode>('profile'); // Default to profile view to highlight the requested beautification
 
   // Toast Helper
   const showToast = (text: string, type: 'info' | 'success' | 'warning' = 'info') => {
@@ -43,11 +43,13 @@ export default function App() {
   const handleSuccessLogin = (phone: string) => {
     setUserPhone(phone);
     setIsLoggedIn(true);
+    setActiveTab('profile');
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserPhone('');
+    setActiveTab('login');
     showToast('已安全退出登录', 'info');
   };
 
@@ -63,7 +65,14 @@ export default function App() {
         <div className="relative w-full h-full flex flex-col overflow-hidden">
           {activeTab === 'upload' ? (
             <VideoUploadPage
-              onBack={() => setActiveTab('login')}
+              onBack={() => setActiveTab('profile')}
+              onShowToast={showToast}
+            />
+          ) : activeTab === 'profile' ? (
+            <UserDashboard
+              phone={userPhone}
+              onLogout={handleLogout}
+              onOpenUpload={() => setActiveTab('upload')}
               onShowToast={showToast}
             />
           ) : (
@@ -183,6 +192,7 @@ export default function App() {
                       phone={userPhone}
                       onLogout={handleLogout}
                       onOpenUpload={() => setActiveTab('upload')}
+                      onShowToast={showToast}
                     />
                   )}
                 </AnimatePresence>
@@ -192,11 +202,11 @@ export default function App() {
         </div>
 
         {/* Bottom Tab Bar (WeChat Mini Program style navigation) */}
-        <div className="relative z-30 bg-white border-t border-neutral-200/80 px-6 py-2 flex items-center justify-around shadow-lg shrink-0">
+        <div className="relative z-30 bg-white border-t border-neutral-200/80 px-4 py-2 flex items-center justify-around shadow-lg shrink-0">
           <button
             type="button"
             onClick={() => setActiveTab('login')}
-            className={`flex flex-col items-center gap-0.5 py-1 px-4 transition-all ${
+            className={`flex flex-col items-center gap-0.5 py-1 px-3 transition-all ${
               activeTab === 'login'
                 ? 'text-[#243727] font-bold'
                 : 'text-neutral-400 hover:text-neutral-600 font-medium'
@@ -209,7 +219,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => setActiveTab('upload')}
-            className={`flex flex-col items-center gap-0.5 py-1 px-4 transition-all relative ${
+            className={`flex flex-col items-center gap-0.5 py-1 px-3 transition-all ${
               activeTab === 'upload'
                 ? 'text-[#243727] font-bold'
                 : 'text-neutral-400 hover:text-neutral-600 font-medium'
@@ -217,7 +227,20 @@ export default function App() {
           >
             <Upload className="w-5 h-5" />
             <span className="text-[10px]">视频投稿</span>
-            <span className="absolute -top-1 -right-1 flex h-2 w-2">
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('profile')}
+            className={`flex flex-col items-center gap-0.5 py-1 px-3 transition-all relative ${
+              activeTab === 'profile'
+                ? 'text-[#243727] font-bold'
+                : 'text-neutral-400 hover:text-neutral-600 font-medium'
+            }`}
+          >
+            <User className="w-5 h-5" />
+            <span className="text-[10px]">个人中心</span>
+            <span className="absolute -top-0.5 right-1 flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
             </span>
