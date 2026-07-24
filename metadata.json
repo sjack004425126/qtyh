@@ -1,0 +1,6 @@
+{
+  "name": "黔藤壹号 - 登录",
+  "description": "黔藤壹号手机号快捷登录与精美视觉界面",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
