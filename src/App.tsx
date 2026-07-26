@@ -9,7 +9,7 @@ import { LotteryPage } from './components/LotteryPage';
 import { CommissionPage } from './components/CommissionPage';
 import { CoursePage } from './components/CoursePage';
 import { Toast, ToastMessage } from './components/Toast';
-import { LogIn, Upload, User, Gift, Wallet, BookOpen } from 'lucide-react';
+import { LogIn, Upload, User, Gift, Wallet, BookOpen, Video } from 'lucide-react';
 import bgImage from './assets/images/login_bg_1784889627874.jpg';
 
 type ViewMode = 'login' | 'upload' | 'profile' | 'lottery' | 'commission' | 'course';
@@ -22,7 +22,7 @@ export default function App() {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Default logged-in state to showcase profile page
   const [userPhone, setUserPhone] = useState('13888888888');
-  const [activeTab, setActiveTab] = useState<ViewMode>('course'); // Default to course view to highlight requested beautification
+  const [activeTab, setActiveTab] = useState<ViewMode>('upload'); // Default to upload/video management view
 
   // Toast Helper
   const showToast = (text: string, type: 'info' | 'success' | 'warning' = 'info') => {
@@ -271,14 +271,18 @@ export default function App() {
           <button
             type="button"
             onClick={() => setActiveTab('upload')}
-            className={`flex flex-col items-center gap-0.5 py-1 px-2.5 transition-all ${
+            className={`flex flex-col items-center gap-0.5 py-1 px-2.5 transition-all relative ${
               activeTab === 'upload'
                 ? 'text-[#243727] font-bold'
                 : 'text-neutral-400 hover:text-neutral-600 font-medium'
             }`}
           >
-            <Upload className="w-5 h-5" />
-            <span className="text-[10px]">视频投稿</span>
+            <Video className="w-5 h-5 text-[#243727]" />
+            <span className="text-[10px]">视频管理</span>
+            <span className="absolute -top-0.5 right-1 flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#243727] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#243727]"></span>
+            </span>
           </button>
 
           <button
