@@ -5,14 +5,15 @@ import { DisclaimerModal } from './components/DisclaimerModal';
 import { PhoneLoginModal } from './components/PhoneLoginModal';
 import { UserDashboard } from './components/UserDashboard';
 import { VideoUploadPage } from './components/VideoUploadPage';
+import { TalentShowcasePage } from './components/TalentShowcasePage';
 import { LotteryPage } from './components/LotteryPage';
 import { CommissionPage } from './components/CommissionPage';
 import { CoursePage } from './components/CoursePage';
 import { Toast, ToastMessage } from './components/Toast';
-import { LogIn, Upload, User, Gift, Wallet, BookOpen, Video } from 'lucide-react';
+import { LogIn, Upload, User, Gift, Wallet, BookOpen, Video, Crown } from 'lucide-react';
 import bgImage from './assets/images/login_bg_1784889627874.jpg';
 
-type ViewMode = 'login' | 'upload' | 'profile' | 'lottery' | 'commission' | 'course';
+type ViewMode = 'login' | 'upload' | 'profile' | 'lottery' | 'commission' | 'course' | 'talent';
 
 export default function App() {
   const [agreedTerms, setAgreedTerms] = useState(false);
@@ -22,7 +23,7 @@ export default function App() {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Default logged-in state to showcase profile page
   const [userPhone, setUserPhone] = useState('13888888888');
-  const [activeTab, setActiveTab] = useState<ViewMode>('upload'); // Default to upload/video management view
+  const [activeTab, setActiveTab] = useState<ViewMode>('talent'); // Default to talent showcase view
 
   // Toast Helper
   const showToast = (text: string, type: 'info' | 'success' | 'warning' = 'info') => {
@@ -66,7 +67,9 @@ export default function App() {
 
         {/* Dynamic View Switcher */}
         <div className="relative w-full h-full flex flex-col overflow-hidden">
-          {activeTab === 'course' ? (
+          {activeTab === 'talent' ? (
+            <TalentShowcasePage onShowToast={showToast} />
+          ) : activeTab === 'course' ? (
             <CoursePage onShowToast={showToast} />
           ) : activeTab === 'commission' ? (
             <CommissionPage onShowToast={showToast} />
@@ -212,6 +215,23 @@ export default function App() {
 
         {/* Bottom Tab Bar (WeChat Mini Program style navigation) */}
         <div className="relative z-30 bg-white border-t border-neutral-200/80 px-1 py-2 flex items-center justify-around shadow-lg shrink-0">
+          <button
+            type="button"
+            onClick={() => setActiveTab('talent')}
+            className={`flex flex-col items-center gap-0.5 py-1 px-1.5 transition-all relative ${
+              activeTab === 'talent'
+                ? 'text-[#243727] font-bold'
+                : 'text-neutral-400 hover:text-neutral-600 font-medium'
+            }`}
+          >
+            <Crown className="w-5 h-5 text-[#243727]" />
+            <span className="text-[10px]">达人带货</span>
+            <span className="absolute -top-0.5 right-1 flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#243727] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#243727]"></span>
+            </span>
+          </button>
+
           <button
             type="button"
             onClick={() => setActiveTab('course')}
